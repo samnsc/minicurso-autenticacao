@@ -20,10 +20,26 @@ final class User: Model, @unchecked Sendable {
     init(
         id: UUID? = nil,
         username: String,
-        passwordHash: String
+        passwordHash: String,
+        photoUrl: String = "https://www.vets4pets.com/siteassets/species/cat/cat-close-up-of-side-profile.jpg"
     ) {
         self.id = id
         self.username = username
         self.passwordHash = passwordHash
+        self.photoUrl = photoUrl
+    }
+    
+    func toResponse() -> UserResponse {
+        return UserResponse(
+            username: self.username,
+            photoUrl: self.photoUrl
+        )
+    }
+    
+    func generateToken() throws -> UserToken {
+        return UserToken(
+            value: [UInt8].random(count: 64).base64,
+            userId: try self.requireID()
+        )
     }
 }

@@ -17,10 +17,16 @@ final class UserToken: Model, @unchecked Sendable {
     init(
         id: UUID? = nil,
         value: String,
-        userID: User.IDValue
+        userId: User.IDValue
     ) {
         self.id = id
         self.value = value
-        self.$user.id = userID
+        self.$user.id = userId
+    }
+    
+    func toResponse() -> UserTokenResponse {
+        return UserTokenResponse(
+            token: self.value
+        )
     }
 }
